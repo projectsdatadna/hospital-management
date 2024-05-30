@@ -23,11 +23,7 @@ const Layout = ({ children }) => {
           Dashboard
         </Link>
 
-        <Link
-          className="nav-link"
-          style={isActive(`/profile/${mockUserInfo._id}`)}
-          to={`/profile/${mockUserInfo._id}`}
-        >
+        <Link className="nav-link" style={isActive(`/profile`)} to={`/profile`}>
           <div className="sb-nav-link-icon">
             <i className="bi bi-person-badge-fill" />
           </div>
