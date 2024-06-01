@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
 import Layout from "../core/Layout";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {
-  listVacDaysEnums,
-  listVacTakenEnums,
-  createVacApp,
-} from "../actions/vaccineAppointmentActions";
-import { listUsers } from "../actions/userActions";
-import { listVacCat } from "../actions/vaccineCatActions";
 import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import { CREATE_APPOINTMENT_VACCINE_RESET } from "../constants/vaccineAppointmentConstants";
 
 const AddAppVaccine = ({ history: history1 }) => {
   const [patient, setPatient] = useState("");
@@ -26,84 +17,43 @@ const AddAppVaccine = ({ history: history1 }) => {
   const [room, setRoom] = useState("105");
   const [remarks, setRemarks] = useState("");
 
-  const dispatch = useDispatch();
+  const userInfo = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    role: 0,
+  };
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const vaccines = [
+    { name: "COVID-19 Vaccine", _id: "1" },
+    { name: "Flu Vaccine", _id: "2" },
+  ];
 
-  const vaccineCatList = useSelector((state) => state.vaccineCatList);
-  const { vaccines } = vaccineCatList;
+  const users = [
+    { name: "Nurse Jane", _id: "1", role: "nurse" },
+    { name: "Patient John", _id: "2", role: "patient" },
+  ];
 
-  console.log(vaccines);
+  const types = ["Type 1", "Type 2", "Type 3"];
 
-  const userList = useSelector((state) => state.userList);
-  const { users } = userList;
-  console.log(users);
+  const takes = ["Yes", "No"];
 
-  const medicineType = useSelector((state) => state.medicineType);
-  const { types } = medicineType;
-  console.log(types);
-
-  const vaccineAppCreate = useSelector((state) => state.vaccineAppCreate);
-  const { error, loading, success } = vaccineAppCreate;
-
-  const vaccineAppTaken = useSelector((state) => state.vaccineAppTaken);
-  const { takes } = vaccineAppTaken;
-
-  const vaccineAppDays = useSelector((state) => state.vaccineAppDays);
-  const { days } = vaccineAppDays;
-
-  useEffect(() => {
-    if (userInfo && userInfo.role === 0) {
-      dispatch(listUsers());
-      dispatch(listVacTakenEnums());
-      dispatch(listVacDaysEnums());
-      dispatch(listVacCat());
-
-      if (success) {
-        dispatch({ type: CREATE_APPOINTMENT_VACCINE_RESET });
-        history1.push("/list-app-vaccine");
-      }
-    } else {
-      history1.push("/login");
-    }
-  }, [dispatch, userInfo, success]);
-
-  const showError = () => (
-    <div
-      className="alert alert-danger"
-      style={{ display: error ? "" : "none" }}
-    >
-      {error}
-    </div>
-  );
-
-  const showLoading = () =>
-    loading && (
-      <div className="d-flex justify-content-center">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(
-      createVacApp({
-        patient,
-        nurse,
-        vaccine,
-        date,
-        time_in,
-        taken,
-        day,
-        room,
-        remarks,
-      })
-    );
+    // Add logic to handle form submission
+    console.log({
+      patient,
+      nurse,
+      vaccine,
+      date,
+      time_in,
+      taken,
+      day,
+      room,
+      remarks,
+    });
   };
-
   const AddAppointmentForm = () => (
     <div className="form-group col-md-12">
       <form onSubmit={submitHandler}>
@@ -252,8 +202,6 @@ const AddAppVaccine = ({ history: history1 }) => {
     <Layout title="Category treatment Form">
       <>
         <h2 className="mb-4">Add Appointment</h2>
-        {showError()}
-        {showLoading()}
         {AddAppointmentForm()}
       </>
     </Layout>
